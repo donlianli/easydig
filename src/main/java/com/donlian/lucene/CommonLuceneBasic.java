@@ -21,6 +21,7 @@ public class CommonLuceneBasic {
 	 * 抽象的父类文件夹
 	 * */
 	public static Directory directory;
+	
 
 	/**
 	 * 返回IndexWriter

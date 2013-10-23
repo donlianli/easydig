@@ -5,6 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
+import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsRequest;
+import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
+import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequestBuilder;
+import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequestBuilder;
@@ -50,9 +55,28 @@ public class RestoreTest {
 				//指定集群名称
                 .put("cluster.name", "elasticsearch")
                 //探测集群中机器状态
-                .put("client.transport.sniff", true).build();
+                .put("client.transport.sniff", false).build();
 		Client client = new TransportClient(settings)
 		.addTransportAddress(new InetSocketTransportAddress("10.9.23.121", 9300));
 		return client;
+	}
+	
+	public static void restoreMapping(String indexName, String typeName,
+			String mapping) {
+		Client client = getRestoreClient();
+		IndicesExistsResponse respone = client.admin().indices().exists(new IndicesExistsRequest(indexName)).actionGet();
+		if(!respone.isExists()){
+			CreateIndexResponse  indexresponse = client.admin().indices()
+					//这个索引库的名称还必须不包含大写字母
+					.prepareCreate(indexName).execute().actionGet();
+					System.out.println(indexresponse.isAcknowledged());;
+		}
+		//如果是在两台机器上，下面直接putMapping可能会报异常
+		PutMappingRequestBuilder builder = client.admin().indices().preparePutMapping(indexName);
+		//testType就像当于数据的table
+		builder.setType(typeName);
+		builder.setSource(mapping);
+		PutMappingResponse  response = builder.execute().actionGet();
+		System.out.println(response.isAcknowledged());
 	}
 }

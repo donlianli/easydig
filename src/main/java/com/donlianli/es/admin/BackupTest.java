@@ -4,11 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.cluster.ClusterState;
+import org.elasticsearch.cluster.metadata.IndexMetaData;
+import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.search.SearchHit;
 
@@ -32,13 +36,15 @@ public class BackupTest {
 	public static final String backupDir = "d:/temp/es";
 	public static final int BULK_INDEX_SIZE =1000;
 	public static void main(String[] args) throws Exception {
-//		backupMapping("goods_city_1");
-//		backupDoc("goods_city_1");
-//		backupAll();
 		long beginTime=System.currentTimeMillis();
-		restore("goods_city_1");
+		backupMapping("goods_city_1");
+		backupDoc("goods_city_1");
+//		backupAll();
+		
+//		restore("goods_city_1");
+//		restoreMapping("goods_city_1");
 		long useTime= System.currentTimeMillis()-beginTime;
-		System.out.println("restore index use time :"+useTime);
+		System.out.println(" use time :"+useTime);
 	}
 	public static String getBackupDataFile(String indexName){
 		return backupDir+"/"+indexName+".docs";
@@ -66,6 +72,90 @@ public class BackupTest {
 	 * @throws IOException 
 	 */
 	public static void backupMapping(String indexName) throws IOException {
+		File file = new File(getBackupMapFile(indexName));
+		JsonFactory jfactory = new JsonFactory();  
+	    JsonGenerator jGenerator = jfactory.createGenerator(file, JsonEncoding.UTF8);  
+		long startTime = System.currentTimeMillis();
+		Client client = ESUtils.getClient();
+		ClusterState cs = client.admin().cluster().prepareState()
+				.setFilterIndices(indexName)
+				.execute().actionGet().getState();
+		IndexMetaData imd = cs.getMetaData().index(indexName);	
+		Map<String, MappingMetaData> typeMap = imd.mappings();
+		int mappingCount =0;
+		for(Map.Entry<String, MappingMetaData> entry : typeMap.entrySet()){
+			//type名称
+			String typeName = entry.getKey();
+			mappingCount++;
+			MappingMetaData typeDesc = entry.getValue();
+			try {
+				jGenerator.writeStartObject();
+				
+				jGenerator.writeStringField("i", indexName); // 
+				jGenerator.writeStringField("t", typeName); // 
+				String mapping = typeDesc.source().toString();
+				jGenerator.writeStringField("m", mapping); // 
+				jGenerator.writeEndObject();
+
+				jGenerator.writeRaw("\n");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}	
+		}
+		
+		jGenerator.flush();
+		jGenerator.close();
+		System.out.println("fetch count:" + mappingCount);
+		System.out.println("useTime:"
+				+ (System.currentTimeMillis() - startTime));
+	}
+	
+	public static void restoreMapping(String indexName) throws Exception {
+		File file = new File(getBackupMapFile(indexName));
+		JsonFactory jfactory = new JsonFactory();
+		JsonParser jParser = jfactory.createParser(file);
+		// loop until token equal to "}"
+		while (!jParser.isClosed()) {
+			jParser.nextToken();
+			String fieldname = jParser.getCurrentName();
+			if ("i".equals(fieldname)) {
+				jParser.nextToken();
+				String iName = jParser.getText(),
+						typeName="",mapping="";
+				//表示数据段开始
+				// 当前结点为indexName
+				
+				jParser.nextToken();
+				fieldname = jParser.getCurrentName();
+				if ("t".equals(fieldname)) {
+					// 当前结点为type
+					jParser.nextToken();
+					typeName = jParser.getText();
+				}
+				else {
+					System.err.println("expect typeName,actural name:"+fieldname); 
+				}
+				jParser.nextToken();
+				fieldname = jParser.getCurrentName();
+				if ("m".equals(fieldname)) {
+					//文档id
+					jParser.nextToken();
+					mapping = jParser.getText();
+				}
+				else {
+					System.err.println("expect docId,actural name:"+fieldname); 
+				}
+				RestoreTest.restoreMapping(iName,typeName,mapping);
+			}
+		}
+		jParser.close();
+	}
+	/**
+	 * 备份结构定义
+	 * @param string
+	 * @throws IOException 
+	 */
+	public static void getMapping(String indexName) throws IOException {
 		//获得所有的index下面的mapping
 		//备份mapping的名称和结构定义
 		String mapping = GetMapping2Test.getMapping(indexName);
@@ -78,7 +168,6 @@ public class BackupTest {
 		JsonFactory jfactory = new JsonFactory();  
 	    /*** write to file ***/  
 	    JsonGenerator jGenerator = jfactory.createGenerator(file, JsonEncoding.UTF8);  
-	    
 		long startTime = System.currentTimeMillis();
 		Client esClient = ESUtils.getClient();
 		SearchResponse searchResponse = esClient.prepareSearch(indexName)
@@ -147,21 +236,18 @@ public class BackupTest {
 			jParser.nextToken();
 			String fieldname = jParser.getCurrentName();
 			if ("i".equals(fieldname)) {
-				n++;
-				String iName = jParser.getText(),
-						typeName="",docId="",docSource="";
 				//表示数据段开始
 				// 当前结点为indexName
 				jParser.nextToken();
-				;
-//				System.out.println("indexName:"+jParser.getText()); 
+				n++;
+				String iName = jParser.getText();
+				String typeName="",docId="",docSource="";
 				jParser.nextToken();
 				fieldname = jParser.getCurrentName();
 				if ("t".equals(fieldname)) {
 					// 当前结点为type
 					jParser.nextToken();
 					typeName = jParser.getText();
-//					System.out.println("typeName:"+jParser.getText()); 
 				}
 				else {
 					System.err.println("expect typeName,actural name:"+fieldname); 
@@ -172,7 +258,6 @@ public class BackupTest {
 					//文档id
 					jParser.nextToken();
 					docId = jParser.getText();
-//					System.out.println("docId:"+jParser.getText());
 				}
 				else {
 					System.err.println("expect docId,actural name:"+fieldname); 
@@ -183,13 +268,12 @@ public class BackupTest {
 					//文档对象
 					jParser.nextToken();
 					docSource = jParser.getText();
-//					System.out.println("docSource:"+jParser.getText());
 				}
 				else {
 					System.err.println("expect docSource,actural name:"+fieldname); 
 				}
 				RestoreTest.bulkIndex(iName,typeName,docId,docSource);
-				if(n%BULK_INDEX_SIZE==0){
+				if(n%BULK_INDEX_SIZE == 0){
 					RestoreTest.flushData();
 				}
 			}
@@ -197,5 +281,4 @@ public class BackupTest {
 		RestoreTest.flushData();
 		jParser.close();
 	}
-	
 }

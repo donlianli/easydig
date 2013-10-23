@@ -39,6 +39,7 @@ public class GetMapping2Test {
 			try {
 				//这个本身就是一个json格式
 				System.out.println(typeName+":"+typeDesc.getSourceAsMap().toString());
+				return typeDesc.getSourceAsMap().toString();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}	

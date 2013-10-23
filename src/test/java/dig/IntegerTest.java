@@ -2,7 +2,7 @@ package dig;
 
 public class IntegerTest {
 public static void main(String argf[]){
-	Integer i =5;
-	System.out.println(9999999d);
+	Integer i =765555;
+	System.out.println(i==765555);
 }
 }

@@ -22,16 +22,16 @@ public class ESUtils {
 	public static Client getClient(){
 		Settings settings = ImmutableSettings.settingsBuilder()
 				//指定集群名称
-                .put("cluster.name", "elasticsearch")
+                .put("cluster.name", "wowogoods")
                 //探测集群中机器状态
-                .put("client.transport.sniff", false).build();
+                .put("client.transport.sniff", true).build();
 		/*
 		 * 创建客户端，所有的操作都由客户端开始，这个就好像是JDBC的Connection对象
 		 * 用完记得要关闭
 		 */
 		Client client = new TransportClient(settings)
-		.addTransportAddress(new InetSocketTransportAddress("192.168.1.106", 9300))
-		.addTransportAddress(new InetSocketTransportAddress("192.168.1.107", 9300));
+		.addTransportAddress(new InetSocketTransportAddress("10.8.210.192", 9350));
+//		.addTransportAddress(new InetSocketTransportAddress("192.168.1.107", 9300));
 		return client;
 	}
 	

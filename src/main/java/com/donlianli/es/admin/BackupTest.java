@@ -178,52 +178,66 @@ public class BackupTest {
 				// 这个游标维持多长时间
 				.setScroll(TimeValue.timeValueMinutes(10000))
 				.execute().actionGet();
-		// 第一次查询，只返回数量和一个scrollId
-		long docCount = searchResponse.getHits().getTotalHits();
-		long fetchCount = 0;
-		System.out.println("total:" + docCount);
-		// 第一次运行没有结果
-		for (SearchHit hit : searchResponse.getHits()) {
-			System.out.println(hit.getSourceAsString());
-		}
-		System.out.println("------------------------------");
-		int failedCount=0;
-		while (fetchCount < docCount && failedCount<3) {
-			// 只要取不够，一直取
-			// 使用上次的scrollId继续访问
-			searchResponse = esClient
-					.prepareSearchScroll(searchResponse.getScrollId())
-					.setScroll(TimeValue.timeValueMinutes(8)).execute()
-					.actionGet();
-			if(searchResponse.getHits().hits().length==0){
-				failedCount++;
+		if(searchResponse.getScrollId() != null){
+			// 第一次查询，只返回数量和一个scrollId
+			long docCount = searchResponse.getHits().getTotalHits();
+			long fetchCount = 0;
+			System.out.println("total:" + docCount);
+			// 第一次运行没有结果
+//			for (SearchHit hit : searchResponse.getHits()) {
+//				System.out.println(hit.getSourceAsString());
+//			}
+			if(docCount==0){
+				/**
+				 * 无数据
+				 */
+				System.out.println("no data");
+				return ;
 			}
-			else {
-				fetchCount += searchResponse.getHits().hits().length;
-				if (fetchCount % 1000 == 0) {
-					System.out.println(fetchCount + " fetched");
+			int failedCount=0;
+			while (fetchCount < docCount && failedCount<3) {
+				// 只要取不够，一直取
+				// 使用上次的scrollId继续访问
+				searchResponse = esClient
+						.prepareSearchScroll(searchResponse.getScrollId())
+						.setScroll(TimeValue.timeValueMinutes(8)).execute()
+						.actionGet();
+				if(searchResponse.getHits().hits().length==0){
+					failedCount++;
 				}
-				for (SearchHit hit : searchResponse.getHits()) {
-					jGenerator.writeStartObject();
-					
-					String indexNm=hit.getIndex();
-					jGenerator.writeStringField("i", indexNm); // 
-					String typeNm=hit.getType();
-					jGenerator.writeStringField("t", typeNm); // 
-					String docId = hit.getId();
-					jGenerator.writeStringField("id", docId); // 
-					String doc = hit.getSourceAsString();
-					jGenerator.writeStringField("s", doc); // 
-					jGenerator.writeEndObject();
-					jGenerator.writeRaw("\n");
+				else {
+					fetchCount += searchResponse.getHits().hits().length;
+					if (fetchCount % 1000 == 0) {
+						System.out.println(fetchCount + " fetched");
+					}
+					for (SearchHit hit : searchResponse.getHits()) {
+						jGenerator.writeStartObject();
+						
+						String indexNm=hit.getIndex();
+						jGenerator.writeStringField("i", indexNm); // 
+						String typeNm=hit.getType();
+						jGenerator.writeStringField("t", typeNm); // 
+						String docId = hit.getId();
+						jGenerator.writeStringField("id", docId); // 
+						String doc = hit.getSourceAsString();
+						jGenerator.writeStringField("s", doc); // 
+						jGenerator.writeEndObject();
+						jGenerator.writeRaw("\n");
+					}
 				}
 			}
+			jGenerator.flush();
+			jGenerator.close();
+			System.out.println("fetch count:" + fetchCount);
+			System.out.println("useTime:"
+					+ (System.currentTimeMillis() - startTime));
 		}
-		jGenerator.flush();
-		jGenerator.close();
-		System.out.println("fetch count:" + fetchCount);
-		System.out.println("useTime:"
-				+ (System.currentTimeMillis() - startTime));
+		else {
+			/**
+			 * 未获得scrollId
+			 * TODO
+			 */
+		}
 	}
 	
 	public static void restore(String indexName) throws Exception {

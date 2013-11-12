@@ -29,7 +29,12 @@ import org.apache.lucene.util.Version;
  * @author 三劫散仙 LuceneDao接口的实现类
  * **/
 public class LuceneCRUD {
-
+	public static void main(String argf[]){
+		LuceneCRUD l = new LuceneCRUD();
+		String path="d:/temp/lucene";
+		l.add(path);
+		l.searchTermQuery(path, "id", "5");
+	}
 	/**
 	 * 抽象的父类文件夹
 	 * */
@@ -94,8 +99,8 @@ public class LuceneCRUD {
 			writer = getWriter();
 			Document doc = new Document();
 			doc.add(new StringField("id", "5", Store.YES));// ID类型不分词存储
-			doc.add(new TextField("name", "秋去春来，几多愁", Store.YES));// name使用默认一元分词
-			doc.add(new TextField("content", "命运总是颠沛流离，命运总是崎岖厉害", Store.YES));// 存储
+			doc.add(new StringField("name", "秋去春来，几多愁", Store.YES));// name使用默认一元分词
+			doc.add(new TextField("content", "命运总是颠沛流离，命运总是崎岖厉害,这次是更新", Store.YES));// 存储
 			writer.addDocument(doc);// 添加进写入流里
 			writer.forceMerge(1);// 优化压缩段,大规模添加数据的时候建议，少使用本方法，会影响性能
 			writer.commit();// 提交数据

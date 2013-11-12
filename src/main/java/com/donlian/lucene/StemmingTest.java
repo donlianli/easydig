@@ -8,6 +8,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
+import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -17,7 +18,6 @@ import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.store.SimpleFSDirectory;
 import org.apache.lucene.util.Version;
 /**
  * 这样设置并没有去掉复数形式，只是
@@ -71,16 +71,15 @@ public class StemmingTest {
 	}
 	
 	public static void  search(String indexPath) throws IOException {
-		Directory d = new SimpleFSDirectory(new File(indexPath));
-		IndexReader reader = IndexReader.open(d);
+		Directory d = FSDirectory.open(new File(indexPath));// 打开索引库
+		IndexReader reader = DirectoryReader.open(d);// 流读取
 		IndexSearcher searcher = new IndexSearcher(reader);
 		TopDocs docs = searcher.search(new TermQuery(new Term("content", "car")),
 				10);
 		System.out.println(docs.totalHits);
 		docs = searcher.search(new TermQuery(new Term("content", "drive")), 10);
 		System.out.println(docs.totalHits);
-		docs = searcher.search(new TermQuery(new Term("content", "profession")),
-				10);
+		docs = searcher.search(new TermQuery(new Term("content", "profession")),10);
 		System.out.println(docs.totalHits);
 	}
 }

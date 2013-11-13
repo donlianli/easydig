@@ -1,4 +1,4 @@
-package com.donlianli.es.test2;
+package com.donlianli.es.test2.facet;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
@@ -18,8 +18,8 @@ public class GroupTest2 {
 		.addUnboundedTo(1)
 		.addUnboundedFrom(1);
 		facetBuilder.facetFilter(FilterBuilders.matchAllFilter());
-		SearchResponse response = client.prepareSearch("test")
-				.setTypes("test")
+		SearchResponse response = client.prepareSearch(BulkIndexTest.INDEX_NAME)
+				.setTypes(BulkIndexTest.TYPE_NAME)
 				.addFacet(facetBuilder)
 		        .setFilter(FilterBuilders.matchAllFilter())
 		        .execute()

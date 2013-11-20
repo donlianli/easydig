@@ -58,7 +58,7 @@ public class PutMappingTest {
 			           	//新增字段
 			           	 .startObject("title")
 			           		.field("type", "string")
-			           		.field("store", false)
+			           		.field("store", "yes")
 			           		.field("index", "analyzed")
 			           		.field("include_in_all", false)
 			           	.endObject()  

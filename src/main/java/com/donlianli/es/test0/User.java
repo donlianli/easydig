@@ -1,4 +1,4 @@
-package com.donlian.es;
+package com.donlianli.es.test0;
 
 public class User {
 	public int age;

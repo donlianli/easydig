@@ -1,4 +1,4 @@
-package com.donlian.es;
+package com.donlianli.es.test0;
 /**
  * 使用义词，
  * 比如：

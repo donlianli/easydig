@@ -1,8 +1,8 @@
-package com.donlian.es;
+package com.donlianli.es.test0;
 
 import org.elasticsearch.client.Client;
 
-import com.donlian.es.ESUtils;
+import com.donlianli.es.test0.ESUtils;
 
 
 public class StopwordTest {

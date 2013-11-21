@@ -1,4 +1,4 @@
-package com.donlian.es;
+package com.donlianli.es.test0;
 
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequestBuilder;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;

@@ -1,4 +1,4 @@
-package com.donlian.es;
+package com.donlianli.es.test0;
 
 import java.util.Map;
 
@@ -9,8 +9,6 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.elasticsearch.index.query.BoolFilterBuilder;
-import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.search.facet.Facet;
 import org.elasticsearch.search.facet.FacetBuilder;
 import org.elasticsearch.search.facet.FacetBuilders;
@@ -21,7 +19,7 @@ import org.elasticsearch.search.facet.terms.TermsFacet;
  * @author lidongliang
  *
  */
-public class FacetTest {
+public class FacetTest2 {
 	/**
 	 * @param args
 	 */
@@ -30,16 +28,11 @@ public class FacetTest {
 		.put("cluster.name", "lidl")
 		.put("client.transport.sniff", true).build();
 		Client client = new TransportClient(settings)
-		.addTransportAddress(new InetSocketTransportAddress("10.9.120.68", 9300));
-
-		//过滤器
-		BoolFilterBuilder filter = FilterBuilders.boolFilter();
-		filter.must(FilterBuilders.rangeFilter("age").from(0).to(200));	
+		.addTransportAddress(new InetSocketTransportAddress("localhost", 9300));
 		//请求
 		SearchRequestBuilder searchBuilder = client.prepareSearch("twitter").setTypes("tweet");
 		//分组条件
-		FacetBuilder marriedFacet = FacetBuilders.termsFacet("married").field("married").allTerms(true);;
-		marriedFacet.facetFilter(filter);
+		FacetBuilder marriedFacet = FacetBuilders.termsFacet("age").field("age").allTerms(true);;
 		searchBuilder.addFacet(marriedFacet);
 		long beginTime = System.currentTimeMillis();
 		SearchResponse response = searchBuilder
@@ -49,11 +42,10 @@ public class FacetTest {
 		Facets facets = response.getFacets();
 		Map<String, Facet> map = facets.getFacets();
 		
-		Facet facet = map.get("married");
+		Facet facet = map.get("age");
 		TermsFacet mFacet = (TermsFacet)facet;
 		for(TermsFacet.Entry entry : mFacet.getEntries()){
-    		System.out.println("key:" +entry.getTerm().toString() 
-    				+ " count:" + entry.getCount());
+    		System.out.println("key:" +entry.getTerm().toString() + " count:" + entry.getCount());
     	}
 		long total = System.currentTimeMillis() - beginTime;
 		System.out.println("useTime:"+total);

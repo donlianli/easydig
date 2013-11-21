@@ -1,4 +1,4 @@
-package com.donlian.es;
+package com.donlianli.es.test0;
 
 import java.util.Map;
 
@@ -21,18 +21,25 @@ import org.elasticsearch.search.facet.terms.TermsFacet;
  * @author lidongliang
  *
  */
-public class MaxFacetTest {
+public class FacetTest {
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Client client = ESUtils.getClient();
+		Settings settings = ImmutableSettings.settingsBuilder()
+		.put("cluster.name", "lidl")
+		.put("client.transport.sniff", true).build();
+		Client client = new TransportClient(settings)
+		.addTransportAddress(new InetSocketTransportAddress("10.9.120.68", 9300));
+
+		//过滤器
+		BoolFilterBuilder filter = FilterBuilders.boolFilter();
+		filter.must(FilterBuilders.rangeFilter("age").from(0).to(200));	
 		//请求
-		SearchRequestBuilder searchBuilder = client.prepareSearch(ESUtils.getIndexName()).setTypes(
-				ESUtils.getTypeName());
+		SearchRequestBuilder searchBuilder = client.prepareSearch("twitter").setTypes("tweet");
 		//分组条件
-		FacetBuilder marriedFacet = FacetBuilders.termsFacet("age").field("age").allTerms(true);
-		marriedFacet.facetFilter(FilterBuilders.termFilter("married", false));
+		FacetBuilder marriedFacet = FacetBuilders.termsFacet("married").field("married").allTerms(true);;
+		marriedFacet.facetFilter(filter);
 		searchBuilder.addFacet(marriedFacet);
 		long beginTime = System.currentTimeMillis();
 		SearchResponse response = searchBuilder
@@ -42,7 +49,7 @@ public class MaxFacetTest {
 		Facets facets = response.getFacets();
 		Map<String, Facet> map = facets.getFacets();
 		
-		Facet facet = map.get("age");
+		Facet facet = map.get("married");
 		TermsFacet mFacet = (TermsFacet)facet;
 		for(TermsFacet.Entry entry : mFacet.getEntries()){
     		System.out.println("key:" +entry.getTerm().toString() 

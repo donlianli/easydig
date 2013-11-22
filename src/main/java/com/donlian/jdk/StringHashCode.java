@@ -3,16 +3,17 @@ package com.donlian.jdk;
 import java.util.HashMap;
 /**
  * 测试字符串的hashcode重复几率
- * @author donlianli
+ * @author donlianli@126.com
+ * 128-33=95个可见字符
  * 长度：			组合总数：		重复次数：		不重复的数量：	重复率
  * 1:			95:			0:			95:			0.0
  * 2:			9025:		6016:		3009:		0.6665928
  * 3:			857375:		764032:		93343:		0.8911293
- * 
+ * 4:			81450625:	79326976:	2990144:	0.9739272
  * 从数字0开始到小写字母z
- * 1:75:0:75:0.0
- * 2:5625:3256:2444:0.5788444
- * 3:421875:351648:75927:0.833536
+ * 1:			75:			0:			75:			0.0
+ * 2:			5625:		3256:		2444:		0.5788444
+ * 3:			421875:		351648:		75927:		0.833536
  * 
  * 纯数字
  * 不会重复
@@ -32,11 +33,11 @@ public class StringHashCode {
 	/**
 	 * 第一个可见字符
 	 */
-    private static char startChar = 'A'; 
+    private static char startChar = ' '; 
     /**
      * 最后一个可见字符
      */
-    private static char endChar = '_'; 
+    private static char endChar = '~'; 
     private static int offset = endChar - startChar + 1; 
     /**
      * 重复次数

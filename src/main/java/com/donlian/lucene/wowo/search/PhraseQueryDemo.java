@@ -5,35 +5,36 @@ import java.io.IOException;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
+import org.apache.lucene.search.PhraseQuery;
 import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 
 import com.donlian.lucene.wowo.Utils;
 /**
- * TermQuery就是去字典中查询
- * 精确等于该词的所有文档。
- * 比如说搜索词为“火锅”.
- * 则“高兴火锅”会被搜索到，而
- * “火热的锅”则不会被搜索到。
+ * phraseQuery的意义在于可以设置slop
+ * 即多个关键词之间的间隔。
+ * <p>
+ * Phrase查询允许多个关键词之间存在一定的距离。
+ * </p>
  * @author donlianli@126.com
  * 2013年11月26日
  */
-public class TermQueryDemo {
+public class PhraseQueryDemo {
 	public static void main(String[] args) throws Exception{
-		new TermQueryDemo().termQuery();
+		new PhraseQueryDemo().phraseQuery();
 	}
 	/**
-	 * 搜索“火锅"在standard里面没有搜索到结果
-	 * 在IK的分词器里面搜索到44325
 	 * @throws IOException
 	 */
-	public void termQuery() throws IOException {
+	public void phraseQuery() throws IOException {
 		IndexSearcher search = Utils.getIndexSearcherIK();
-		Query q = new TermQuery(new Term(Utils.SEARCH_FIELD, "火锅"));
+		PhraseQuery q= new PhraseQuery();
+		q.add(new Term(Utils.SEARCH_FIELD, "火锅"));
+		q.add(new Term(Utils.SEARCH_FIELD, "上地"));
+		//设置词之间的间隔
+		q.setSlop(15);
 		TopDocs td = search.search(q, 10);// 获取最高得分命中
-		//总数 44325
+		//总数 17
 		System.out.println("totalHits:"+td.totalHits);
 		for (ScoreDoc doc : td.scoreDocs) {
 			Document d = search.doc(doc.doc);

@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.search.BooleanClause.Occur;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
@@ -12,28 +14,32 @@ import org.apache.lucene.search.TopDocs;
 
 import com.donlian.lucene.wowo.Utils;
 /**
- * TermQuery就是去字典中查询
- * 精确等于该词的所有文档。
- * 比如说搜索词为“火锅”.
- * 则“高兴火锅”会被搜索到，而
- * “火热的锅”则不会被搜索到。
+ * BooleanQuery提供了逻辑组合搜索条件。
+ * 比如：搜索包含关键字"火锅"并且还包含"知春路"，并且包含
+ * "地铁"的商品。
  * @author donlianli@126.com
  * 2013年11月26日
  */
-public class TermQueryDemo {
+public class BooleanQueryDemo {
 	public static void main(String[] args) throws Exception{
-		new TermQueryDemo().termQuery();
+		new BooleanQueryDemo().booleanQuery();
 	}
 	/**
-	 * 搜索“火锅"在standard里面没有搜索到结果
-	 * 在IK的分词器里面搜索到44325
+	 * 包含上地和火锅的搜索
 	 * @throws IOException
 	 */
-	public void termQuery() throws IOException {
+	public void booleanQuery() throws IOException {
 		IndexSearcher search = Utils.getIndexSearcherIK();
-		Query q = new TermQuery(new Term(Utils.SEARCH_FIELD, "火锅"));
+		Query q1 = new TermQuery(new Term(Utils.SEARCH_FIELD, "火锅"));
+		Query q2 = new TermQuery(new Term(Utils.SEARCH_FIELD, "上地"));
+		//排除词，这个词也必须是词根
+		Query q3 = new TermQuery(new Term(Utils.SEARCH_FIELD, "集贤"));
+		BooleanQuery q= new BooleanQuery();
+		q.add(q1, Occur.MUST);
+		q.add(q2, Occur.MUST);
+		q.add(q3, Occur.MUST_NOT);
 		TopDocs td = search.search(q, 10);// 获取最高得分命中
-		//总数 44325
+		//总数 17
 		System.out.println("totalHits:"+td.totalHits);
 		for (ScoreDoc doc : td.scoreDocs) {
 			Document d = search.doc(doc.doc);

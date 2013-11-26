@@ -1,42 +1,20 @@
 package com.donlian.lucene.wowo;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.IntField;
 import org.apache.lucene.document.LongField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.util.Version;
-import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.donlian.jdbc.MysqlConnectionUtil;
 import com.mysql.jdbc.StringUtils;
 
 public class IndexManager {
-	public static final String INDEX_DIR="d:/temp/wowo";
-	public static Directory directory;
-	/**
-	 * 返回IndexWriter
-	 * */
-	public static IndexWriter getWriter() throws Exception {
-//		Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_45);// 设置标准分词器
-		//启用非智能模式max_word模式分词更细
-		Analyzer analyzer = new IKAnalyzer(false);									
-		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_45,
-				analyzer);// 设置IndexWriterConfig
-		iwc.setRAMBufferSizeMB(30);//设置缓冲区大小
-		return new IndexWriter(directory, iwc);
-	}
 	/**
 	 * @indexPath 索引存放路径
 	 * **/
@@ -46,12 +24,10 @@ public class IndexManager {
 		long beginTime = System.currentTimeMillis();
 		final int BATCH_SIZE=10000;
 		try {
-			directory = FSDirectory.open(new File(indexWriterPath));// 打开存放索引的路径
-			writer = getWriter();
-			
+			writer = Utils.getWriter();
 			Connection conn = MysqlConnectionUtil.getConnetcion();
 			Statement st = conn.createStatement();
-			ResultSet rs = st.executeQuery("select * from jeehe_goods");
+			ResultSet rs = st.executeQuery("select * from jeehe_goods order by goods_id");
 			rs.setFetchSize(BATCH_SIZE);
 			
 			while(rs.next()){
@@ -65,7 +41,7 @@ public class IndexManager {
 				String channelId = rs.getString(8);
 				String isCash = rs.getString(9);
 				Document doc = new Document();
-				doc.add(new LongField("id", Long.parseLong(goodsId), Store.NO));
+				doc.add(new LongField("id", Long.parseLong(goodsId), Store.YES));
 				doc.add(new IntField ("catId", Integer.parseInt(catId), Store.NO));
 				doc.add(new IntField ("saleCount", Integer.parseInt(saleCount), Store.NO));
 				doc.add(new LongField("actStartTime", Long.parseLong(actStartTime), Store.NO));
@@ -118,6 +94,6 @@ public class IndexManager {
 	}
 
 	public static void main(String[] args) {
-		add(INDEX_DIR);// 调用添加方法
+		add(Utils.INDEX_DIR);// 调用添加方法
 	}
 }

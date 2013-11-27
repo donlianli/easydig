@@ -33,7 +33,6 @@ public class TermQueryDemo {
 		IndexSearcher search = Utils.getIndexSearcherIK();
 		Query q = new TermQuery(new Term(Utils.SEARCH_FIELD, "火锅"));
 		TopDocs td = search.search(q, 10);// 获取最高得分命中
-		//总数 44325
 		System.out.println("totalHits:"+td.totalHits);
 		for (ScoreDoc doc : td.scoreDocs) {
 			Document d = search.doc(doc.doc);

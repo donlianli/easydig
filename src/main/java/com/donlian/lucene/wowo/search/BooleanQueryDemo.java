@@ -39,7 +39,6 @@ public class BooleanQueryDemo {
 		q.add(q2, Occur.MUST);
 		q.add(q3, Occur.MUST_NOT);
 		TopDocs td = search.search(q, 10);// 获取最高得分命中
-		//总数 17
 		System.out.println("totalHits:"+td.totalHits);
 		for (ScoreDoc doc : td.scoreDocs) {
 			Document d = search.doc(doc.doc);

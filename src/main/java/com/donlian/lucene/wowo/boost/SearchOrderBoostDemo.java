@@ -14,7 +14,7 @@ import org.apache.lucene.search.TopDocs;
 
 import com.donlian.lucene.wowo.Utils;
 /**
- * 搜索时加权实例程序。
+ * 搜索时加权示例程序。
  * 比如搜索"小肥羊火锅"
  */
 public class SearchOrderBoostDemo {

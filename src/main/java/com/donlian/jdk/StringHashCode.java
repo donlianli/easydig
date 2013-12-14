@@ -1,6 +1,7 @@
 package com.donlian.jdk;
 
 import java.util.HashMap;
+import java.util.UUID;
 /**
  * 测试字符串的hashcode重复几率
  * @author donlianli@126.com
@@ -45,16 +46,20 @@ public class StringHashCode {
     private static int dupCount = 0; 
     
     public static void main(String[] args) { 
-        for(int len=1;len<5;len++){
-        	 char[] chars = new char[len]; 
-             tryBit(chars, len); 
-             int total=(int)Math.pow(offset, len);
-             System.out.println(len+":"+total + ":" + dupCount+":"+map.size()+":"+(float)dupCount/total);
-        }
-        
+//    	testLen();
+    	testUUID();
     } 
  
-    private static void tryBit(char[] chars, int i) { 
+    private static void testLen() {
+    	   for(int len=1;len<5;len++){
+          	 char[] chars = new char[len]; 
+               tryBit(chars, len); 
+               int total=(int)Math.pow(offset, len);
+               System.out.println(len+":"+total + ":" + dupCount+":"+map.size()+":"+(float)dupCount/total);
+          }
+	}
+
+	private static void tryBit(char[] chars, int i) { 
         for (char j = startChar; j <= endChar; j++) { 
             chars[i - 1] = j; 
             if (i > 1) 
@@ -77,4 +82,19 @@ public class StringHashCode {
             map.put(key, null); 
         } 
     } 
+    
+    public static void testUUID(){
+    	int count=1000000;
+    	for(int i=0;i<count;i++){
+    		String s = UUID.randomUUID().toString(); 
+        	Integer key = s.hashCode();
+            if (map.containsKey(key)) { 
+            	System.out.println(s+":"+map.get(key));
+                dupCount++; 
+            } else { 
+                map.put(key, s); 
+            } 
+    	}
+    	System.out.println( dupCount+":"+map.size()+":"+(float)dupCount/count);
+    }
 }

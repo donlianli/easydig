@@ -14,7 +14,7 @@ import org.apache.lucene.search.TopDocs;
 
 import com.donlian.lucene.wowo.Utils;
 /**
- * 搜索时加权实例程序。
+ * 搜索时加权示例程序。
  * 比如搜索"小肥羊火锅", 我们希望计算分支时，小肥羊的权重要比火锅的权重大。
  * 那么我们可以设置小肥羊的权重为0.8，火锅的权重为0.5.这样
  * 小肥羊相关的商品更会被拍到前面。

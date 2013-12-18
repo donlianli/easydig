@@ -18,7 +18,7 @@ public class IndexManager {
 	/**
 	 * @indexPath 索引存放路径
 	 * **/
-	public static void add(String indexWriterPath) {
+	public static void add() {
 		IndexWriter writer = null;
 		int n=0;
 		long beginTime = System.currentTimeMillis();
@@ -69,7 +69,7 @@ public class IndexManager {
 			StringBuilder sb = new StringBuilder();
 			if(useTime>60*1000 && useTime<60*1000*60){
 				//大于1分，小于1小时
-				sb.append(useTime/1000*60*60).append("分");
+				sb.append(useTime/(1000*60)).append("分");
 			}
 			else {
 				sb.append(useTime);
@@ -94,6 +94,6 @@ public class IndexManager {
 	}
 
 	public static void main(String[] args) {
-		add(Utils.INDEX_DIR);// 调用添加方法
+		add();// 调用添加方法
 	}
 }

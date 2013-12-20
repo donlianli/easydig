@@ -7,7 +7,7 @@ public class MysqlConnectionUtil {
 	public static Connection getConnetcion() {
 		String driver = "com.mysql.jdbc.Driver";
 		// URL指向要访问的数据库名
-		String url = "jdbc:mysql://127.0.0.1:3306/test";
+		String url = "jdbc:mysql://192.168.1.108:3306/test";
 		// MySQL配置时的用户名
 		String user = "root";
 		// Java连接MySQL配置时的密码

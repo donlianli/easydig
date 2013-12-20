@@ -41,7 +41,7 @@ public class Utils {
 	 * */
 	public static IndexWriter getIKWriter() {
 		try{
-			directory = FSDirectory.open(new File(INDEX_DIR));// 打开存放索引的路径
+			directory = FSDirectory.open(new File(IK_INDEX_DIR));// 打开存放索引的路径
 			//启用非智能模式max_word模式分词更细
 			Analyzer analyzer = new IKAnalyzer(false);									
 			IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_45,analyzer);// 设置IndexWriterConfig

@@ -85,7 +85,7 @@ public class CommonLuceneBasic {
 	public static void main(String[] args) {
 		String path = "d:/temp/lucene3";
 //		add(path);// 调用添加方法
-		simpleSearch(path,"content","我说我的眼里只你");
+		simpleSearch(path,"content","里只你");
 	}
 	/***
 	 * 简单查询的方法

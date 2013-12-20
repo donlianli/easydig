@@ -11,7 +11,8 @@ package com.donlian.concurrent;
  * 
  * 之所以线程没有终止，估计是因为新启动的线程没有跟主存同步。
  * 
- * 这个程序在单核的cpu上面也没有终止，说明编译器在编译代码的时候就已经做了优化
+ * 这个程序在单核的cpu上面也没有终止，说明编译器在编译代码的时候就已经做了优化.
+ * 其实真正需要改的是在flag前面加上volatile关键字
  */
 public class VolatileObjectTest implements Runnable {
 	private  ObjectA a; // 加上volatile 就可以正常结束While循环了
@@ -55,7 +56,7 @@ public class VolatileObjectTest implements Runnable {
 }
 
 class ObjectA {
-	private boolean flag = true;
+	private  boolean  flag = true;
 
 	public boolean isFlag() {
 		return flag;

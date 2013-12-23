@@ -6,7 +6,7 @@
 	<version>0.0.1</version>
 	<dependencies>
 	   <dependency>
-		<groupId>com.google.inject</groupId>
+			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
 			<version>4.0-beta</version>
 		</dependency>         

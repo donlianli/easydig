@@ -14,7 +14,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class Jackson2Test {
 	static ObjectMapper mapper = new ObjectMapper();
 	public static void main(String[] args) throws Exception {
-//		test();
+		test();
+		
+	}
+	public void testTime() throws Exception {
 		int COUNT=100000;
 		List<LogModel> list = new ArrayList<LogModel>(COUNT);
 		for(int i=0;i<COUNT;i++){

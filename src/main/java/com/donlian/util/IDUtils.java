@@ -7,7 +7,7 @@ public class IDUtils {
 	 * @throws Exception 
 	 */
 	public static void main(String[] args) throws Exception {
-		System.out.println(new JeeheDES().decrypt("83def97dd1796338"));;
+		System.out.println(new JeeheDES().decrypt("ac35273040a17464"));;
 		System.out.println(new JeeheDES().encrypt("673059"));;
 	}
 }

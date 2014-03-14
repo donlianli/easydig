@@ -22,21 +22,18 @@ public class ConcurrentMapTest {
 	private static MemcachedClient memCachedClient;
 	static {
 		try {
-			memCachedClient = new MemcachedClient( new InetSocketAddress("192.168.1.103", 11211));
+			memCachedClient = new MemcachedClient( new InetSocketAddress("10.8.210.188", 32261));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	public static Object getInTask(String cacheKey, Callable<Object> caller) {
 		// 未命中缓存，开始计算
-		FutureTask<Object> f = cache.get(cacheKey);
+		FutureTask<Object> ft = new FutureTask<Object>(caller);
+		FutureTask<Object> f = cache.putIfAbsent(cacheKey, ft);
 		if (f == null) {
-			FutureTask<Object> ft = new FutureTask<Object>(caller);
-			f = cache.putIfAbsent(cacheKey, ft);
-			if (f == null) {
-				f = ft;
-				ft.run();
-			}
+			f = ft;
+			ft.run();
 		}
 		try {
 			Object result = f.get();

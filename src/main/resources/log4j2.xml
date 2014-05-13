@@ -6,6 +6,9 @@
     </Console>
   </appenders>
   <loggers>
+    <Logger name="org.apache" level="trace">
+      <AppenderRef ref="Console"/>
+    </Logger>
     <root level="debug">
       <appender-ref ref="Console"/>
     </root>

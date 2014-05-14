@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;  
 import java.net.ServerSocket;  
 import java.net.Socket;  
+import java.util.Random;
 /** 
  * Socket通讯服务器端 
  * @author 米强<如转载请保留作者和出处> 
@@ -43,7 +44,6 @@ class ServerThread extends Thread {
     public ServerThread(Socket s) {  
         this.s = s;  
         try {  
-        	System.out.println("clientIp:"+s.getRemoteSocketAddress().toString());
             // 从Socket中获取输入流和输出流，由于我们只做一个简单的字符串通讯，所以采用BufferedRead和PrintStream来封装输入、输出流  
             read = new BufferedReader(new InputStreamReader(s.getInputStream()));  
             print = new PrintStream(s.getOutputStream());  
@@ -56,13 +56,22 @@ class ServerThread extends Thread {
      */  
     public void run() {  
         try {  
-            String message = null;  
-            print.println("Content-Type:text/html; charset=utf-8\r\n\r\n");  
+            String message = null; 
+            Random r = new Random();
             // 这里循环可以使服务器持续的接收客户端信息。read.readLine()通过输入流读取一段字符串，赋值给message变量，如果message字符串不为“exit”则循环，否则结束循环  
-//            while (!(message = read.readLine()).equals("exit")){  
-//                // 将字符串前面添加“返回：”，再发回客户端  
-//                print.println("返回：" + message);  
-//            }  
+            while (!(message = read.readLine()).equals("exit")){ 
+            	System.out.println("client respone:'"+message+"'");
+                // 将字符串前面添加“返回：”，再发回客户端  
+            	int n = r.nextInt(1000);
+            	try {
+            		System.out.println("server sleep "+n+" ms");
+					Thread.sleep(n);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+                print.println("serverSleepTime:" + n);  
+            }  
+        } catch (IOException e) {  
         } finally {  
             // 在 finally 代码块中无论如何都会执行下面代码：  
             try {  

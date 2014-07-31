@@ -2,12 +2,15 @@
 <configuration status="WARN">
   <appenders>
     <Console name="Console" target="SYSTEM_OUT">
-      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} %L - %msg%n"/>
     </Console>
   </appenders>
   <loggers>
     <Logger name="org.apache" level="trace">
       <AppenderRef ref="Console"/>
+    </Logger>
+    <Logger name="org.apache.http.client.protocol.RequestAddCookies">
+     <AppenderRef ref="Console"/>
     </Logger>
     <root level="debug">
       <appender-ref ref="Console"/>

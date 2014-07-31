@@ -17,5 +17,6 @@ public class Int2StringHashcode {
 			}
 		}
 		System.out.println("hashcode重复次数："+dupCount+",mapSize:"+map.size());
+		System.out.println(Integer.MAX_VALUE);
 	}
 }

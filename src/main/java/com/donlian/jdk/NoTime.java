@@ -1,6 +1,5 @@
 package com.donlian.jdk;
 
-import java.sql.Timestamp;
 import java.util.UUID;
 
 public class NoTime {

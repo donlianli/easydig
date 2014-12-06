@@ -1,27 +1,30 @@
 package com.donlian.jdk;
 /**
  * 这个测试方法说明
- * static方法锁住的是类。
- * 实例方法锁住的是实例锁。
- * 两个锁互不干扰
+ * 1、static方法锁住的是类。
+ * 2、实例方法锁住的是实例锁。
+ * 3、两个锁互不干扰
  * @author donlianli
  *
  */
 public class TestLock {  
     public static void main(String[] args) {  
         final Lock lock = new Lock();  
+        for(int i=0;i<10;i++){
+        	 new Thread() {  
+                 public void run() {  
+                     Lock.staticMethod3();  
+                 }  
+             }.start(); 
+             new Thread() {  
+                 public void run() {  
+                     Lock.staticMethod4();  
+                 }  
+             }.start();
+        }
+        
   
-        new Thread() {  
-            public void run() {  
-                Lock.staticMethod3();  
-            }  
-        }.start();  
-  
-        new Thread() {  
-            public void run() {  
-                Lock.staticMethod4();  
-            }  
-        }.start();
+      
         
         try {  
             Thread.sleep(100);  

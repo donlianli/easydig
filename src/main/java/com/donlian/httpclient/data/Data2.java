@@ -1,51 +1,11 @@
-package com.donlian.httpclient;
+package com.donlian.httpclient.data;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Data {
+public class Data2 {
 	public static Map<String,String> PROXY_MAP = new HashMap<String,String>();
 	static{
-		PROXY_MAP.put("122.96.59.102","83");
-		PROXY_MAP.put("111.1.36.27","83");
-		PROXY_MAP.put("61.132.81.19","80");
-		PROXY_MAP.put("218.244.235.169","80");
-		PROXY_MAP.put("111.1.36.24","81");
-		PROXY_MAP.put("221.130.162.77","84");
-		PROXY_MAP.put("116.228.55.217","8003");
-		PROXY_MAP.put("115.238.243.202","80");
-		PROXY_MAP.put("111.1.36.24","82");
-		PROXY_MAP.put("122.96.59.106","81");
-		PROXY_MAP.put("114.104.203.14","82");
-		PROXY_MAP.put("122.96.59.106","83");
-		PROXY_MAP.put("114.104.203.3","81");
-		PROXY_MAP.put("114.104.203.14","83");
-		PROXY_MAP.put("211.151.50.179","81");
-		PROXY_MAP.put("111.1.36.27","80");
-		PROXY_MAP.put("122.96.59.99","80");
-		PROXY_MAP.put("114.104.203.14","84");
-		PROXY_MAP.put("122.96.59.99","843");
-		PROXY_MAP.put("114.80.136.112","7780");
-		PROXY_MAP.put("120.198.230.11","82");
-		PROXY_MAP.put("114.104.203.12","81");
-		PROXY_MAP.put("120.198.230.93","80");
-		PROXY_MAP.put("120.198.230.62","82");
-		PROXY_MAP.put("120.198.230.62","81");
-		PROXY_MAP.put("120.198.230.62","84");
-		PROXY_MAP.put("120.198.230.11","81");
-		PROXY_MAP.put("122.227.8.190","80");
-		PROXY_MAP.put("120.198.230.62","83");
-		PROXY_MAP.put("218.64.255.253","3128");
-		
-		PROXY_MAP.put("120.84.233.250","8080");
-		PROXY_MAP.put("59.172.208.186","8080");
-		PROXY_MAP.put("222.218.152.36","9999");
-		PROXY_MAP.put("120.210.194.19","80");
-		PROXY_MAP.put("221.7.11.69","80");
-		PROXY_MAP.put("120.210.194.15","80");
-		PROXY_MAP.put("122.71.24.115","8080");
-		PROXY_MAP.put("60.21.136.22","8080");
-		PROXY_MAP.put("222.222.251.98","9999");
 		PROXY_MAP.put("61.163.55.3","9000");
 		PROXY_MAP.put("118.163.157.13","3128");
 		PROXY_MAP.put("183.129.137.174","3128");
@@ -108,6 +68,47 @@ public class Data {
 		PROXY_MAP.put("111.161.126.88","8080");
 		PROXY_MAP.put("58.248.81.11","9999");
 		PROXY_MAP.put("120.210.194.7","80");
+		PROXY_MAP.put("122.96.59.102","83");
+		PROXY_MAP.put("111.1.36.27","83");
+		PROXY_MAP.put("61.132.81.19","80");
+		PROXY_MAP.put("218.244.235.169","80");
+		PROXY_MAP.put("111.1.36.24","81");
+		PROXY_MAP.put("221.130.162.77","84");
+		PROXY_MAP.put("116.228.55.217","8003");
+		PROXY_MAP.put("115.238.243.202","80");
+		PROXY_MAP.put("111.1.36.24","82");
+		PROXY_MAP.put("122.96.59.106","81");
+		PROXY_MAP.put("114.104.203.14","82");
+		PROXY_MAP.put("122.96.59.106","83");
+		PROXY_MAP.put("114.104.203.3","81");
+		PROXY_MAP.put("114.104.203.14","83");
+		PROXY_MAP.put("211.151.50.179","81");
+		PROXY_MAP.put("111.1.36.27","80");
+		PROXY_MAP.put("122.96.59.99","80");
+		PROXY_MAP.put("114.104.203.14","84");
+		PROXY_MAP.put("122.96.59.99","843");
+		PROXY_MAP.put("114.80.136.112","7780");
+		PROXY_MAP.put("120.198.230.11","82");
+		PROXY_MAP.put("114.104.203.12","81");
+		PROXY_MAP.put("120.198.230.93","80");
+		PROXY_MAP.put("120.198.230.62","82");
+		PROXY_MAP.put("120.198.230.62","81");
+		PROXY_MAP.put("120.198.230.62","84");
+		PROXY_MAP.put("120.198.230.11","81");
+		PROXY_MAP.put("122.227.8.190","80");
+		PROXY_MAP.put("120.198.230.62","83");
+		PROXY_MAP.put("218.64.255.253","3128");
+		
+		PROXY_MAP.put("120.84.233.250","8080");
+		PROXY_MAP.put("59.172.208.186","8080");
+		PROXY_MAP.put("222.218.152.36","9999");
+		PROXY_MAP.put("120.210.194.19","80");
+		PROXY_MAP.put("221.7.11.69","80");
+		PROXY_MAP.put("120.210.194.15","80");
+		PROXY_MAP.put("122.71.24.115","8080");
+		PROXY_MAP.put("60.21.136.22","8080");
+		PROXY_MAP.put("222.222.251.98","9999");
+		
 		PROXY_MAP.put("59.108.106.118","8080");
 		PROXY_MAP.put("120.210.194.11","80");
 		PROXY_MAP.put("218.29.154.50","8000");

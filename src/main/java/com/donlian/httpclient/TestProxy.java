@@ -5,7 +5,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHeaders;
 import org.apache.http.HttpHost;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -13,20 +15,21 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 
-import com.donlian.httpclient.data.Data4;
+import com.donlian.httpclient.data.Data0;
 
 /**
  * 刷搜房网帖子的点击数
  * @author donlianli@126.com
  * 2014年12月6日
  */
-public class SoufangHit {
-  private static  String url = "http://www.searchtb.com/";
+public class TestProxy {
+  private static  String url = "http://123.57.75.145/test.php";
   public static void main(String[] args) throws InterruptedException {
 	  ExecutorService fixedThreadPool = Executors.newFixedThreadPool(5);  
-	  for(final Map.Entry<String, String> entry: Data4.PROXY_MAP.entrySet()){
+	  for(final Map.Entry<String, String> entry: Data0.PROXY_MAP.entrySet()){
 		  fixedThreadPool.submit(new Runnable(){
 			@Override
 			public void run() {
@@ -52,14 +55,20 @@ public class SoufangHit {
 		        .setConnectTimeout(8000)
 		        .build();
 	  HttpGet httpget = new HttpGet(url);
+	  //伪造xxf
+	  Header header = new BasicHeader("X-Forwarded-For", "13.25.23.1");
+	  httpget.addHeader(header);
 	  httpget.setConfig(requestConfig);
 	  CloseableHttpResponse response=null;
 	  try {
+		  
 		  response = httpclient.execute(httpget);
 		  HttpEntity entity = response.getEntity();// 响应实体/内容  
-		  String str = EntityUtils.toString(entity,"gb2312"); 
+		  String str = EntityUtils.toString(entity,"utf-8"); 
 		  if(str!=null && str.contains("")){
 			  System.out.println("单击一次，IP:"+proxyId);
+			  System.out.println("response:"+str);
+			  
 		  }
 		  else {
 			  System.out.println("没有完成单击，IP:"+proxyId);

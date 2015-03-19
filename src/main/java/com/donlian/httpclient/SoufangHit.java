@@ -15,7 +15,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.apache.http.util.EntityUtils;
 
-import com.donlian.httpclient.data.Data4;
+import com.donlian.httpclient.data.Data5;
 
 /**
  * 刷搜房网帖子的点击数
@@ -23,10 +23,10 @@ import com.donlian.httpclient.data.Data4;
  * 2014年12月6日
  */
 public class SoufangHit {
-  private static  String url = "http://www.searchtb.com/";
+  private static  String url = "http://blog.csdn.net/donlian/article/details/16828571";
   public static void main(String[] args) throws InterruptedException {
 	  ExecutorService fixedThreadPool = Executors.newFixedThreadPool(5);  
-	  for(final Map.Entry<String, String> entry: Data4.PROXY_MAP.entrySet()){
+	  for(final Map.Entry<String, String> entry: Data5.PROXY_MAP.entrySet()){
 		  fixedThreadPool.submit(new Runnable(){
 			@Override
 			public void run() {
@@ -66,8 +66,8 @@ public class SoufangHit {
 		  }
 	  } 
 	  catch(Exception e){
-		 // e.printStackTrace();
-		  System.out.println("投票失败，IP:"+proxyId);
+		  System.out.println("投票失败，IP:"+proxyId+",原因："+e.getMessage());
+		//  e.printStackTrace();
 	  }
 	  finally {
 	      try {

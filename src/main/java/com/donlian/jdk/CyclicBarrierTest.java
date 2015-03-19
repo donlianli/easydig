@@ -2,7 +2,12 @@ package com.donlian.jdk;
 
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
-
+/**
+ * 栅栏的作用就相当于好多人在比赛，然后约定了多个地点，分了好几关，只有大家都通过第一关
+ * 之后，才开始继续下一关的比赛。
+ * @author donlianli@126.com
+ *
+ */
 public class CyclicBarrierTest {
 	public static void main(String[] args) {
 		int threadSize=10;

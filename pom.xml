@@ -5,6 +5,25 @@
 	<artifactId>dig</artifactId>
 	<version>0.0.1</version>
 	<dependencies>
+	<dependency>
+	<groupId>org.easymock</groupId>
+	  <artifactId>easymock</artifactId>
+	  <version>3.3.1</version>
+	  <scope>test</scope>
+	</dependency>
+	<dependency>
+	    <groupId>org.unitils</groupId>
+	    <artifactId>unitils-database</artifactId>
+	    <version>3.4.2</version>
+	    <scope>test</scope>
+	</dependency>
+	<dependency>
+	    <groupId>org.unitils</groupId>
+	    <artifactId>unitils-dbunit</artifactId>
+	    <version>3.4.2</version>
+	    <scope>test</scope>
+	</dependency>
+
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>

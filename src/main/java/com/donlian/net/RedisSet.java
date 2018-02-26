@@ -9,14 +9,17 @@ import java.net.Socket;
  * redis 网络通信协议demo 
  * @author donlianli
  * 2018年2月24日
- * 
+ * 向redis设置一个mykey值为myvalue的动作
  */
-public class RedisGet {
-
+public class RedisSet {
+	
 	public static void main(String[] args) {
-		//注意，确实是回车换行，不要再转义
-		String setCmd = "*3\r\n$3\r\nSET\r\n$5\r\n"
-				+ "mykey\r\n$7\r\nmyvalue\r\n";
+		//注意，是回车换行，不要再转义
+		String setCmd = 
+				  "*3\r\n" //参数的数量
+				+ "$3\r\nSET\r\n" //第一个参数的长度及对应的值SET
+				+ "$5\r\nmykey\r\n"//第二个参数的长度及对应的值mykey
+				+ "$7\r\nmyvalue\r\n";//第三个参数的长度及对应的值myvalue
 		try {
             //192.168.82.18:6384 redis地址
             Socket socket = new Socket("192.168.82.18", 6384);
@@ -33,11 +36,15 @@ public class RedisGet {
             InputStream ips = socket.getInputStream();
             InputStreamReader ipsr = new InputStreamReader(ips);
             BufferedReader br = new BufferedReader(ipsr);
-            String s = "";   
+              
             System.out.println("开始接收响应"); 
-            while((s = br.readLine()) != null) {
-            	System.out.println(s);    
-          	}
+            /**
+             * 响应内容为 "+OK\r\n"
+             */
+            String s = br.readLine();
+            //应该用  判断是否结束
+            System.out.println(s);    
+            System.out.println("接收完毕");
             //4、关闭资源 
             write.close(); // 关闭Socket输出流
             socket.close(); // 关闭Socket

@@ -39,7 +39,7 @@ public class RedisSet {
               
             System.out.println("开始接收响应"); 
             /**
-             * 响应内容为 "+OK\r\n"
+             * 响应内容为 "+OK\r\n"，readLine直接将后面的\r\n给删掉了，所以无法输出
              */
             String s = br.readLine();
             //应该用  判断是否结束

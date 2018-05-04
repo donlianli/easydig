@@ -2,20 +2,14 @@ package com.donlian.redisclient;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
-/**
- * 自己利用jdk自带的api编写一个
- * 实现set mykey myvalue的 demo
- * @author donlianli
- */
-public class SetMyKey {
+public class InfoCmd {
     public static void main(String argv[]) throws IOException {
-        String setCmd="*3\r\n$3\r\nSET\r\n$5\r\nmykey\r\n$7\r\nmyvalue\r\n";
+        String infoCmd="$4\r\ninfo\r\n";
         Socket socket=new Socket("localhost", 7777);
         OutputStream os=socket.getOutputStream();//字节输出流
         PrintWriter pw=new PrintWriter(os);//将输出流包装为打印流
-        pw.write(setCmd);
+        pw.write(infoCmd);
         pw.flush();
         InputStream is=socket.getInputStream();
         BufferedReader br=new BufferedReader(new InputStreamReader(is));

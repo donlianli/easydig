@@ -9,7 +9,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
- * 自己利用jdk自带的api编写一个
+ * 利用jdk自带的api编写一个
  * 实现set mykey myvalue的 demo
  * @author donlianli
  */

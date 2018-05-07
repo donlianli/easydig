@@ -1,29 +1,33 @@
 package com.donlian.redisclient;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 /**
- * ×Ô¼ºÀûÓÃjdk×Ô´øµÄapi±àĞ´Ò»¸ö
- * ÊµÏÖset mykey myvalueµÄ demo
+ * è‡ªå·±åˆ©ç”¨jdkè‡ªå¸¦çš„apiç¼–å†™ä¸€ä¸ª
+ * å®ç°set mykey myvalueçš„ demo
  * @author donlianli
  */
 public class SetMyKey {
     public static void main(String argv[]) throws IOException {
         String setCmd="*3\r\n$3\r\nSET\r\n$5\r\nmykey\r\n$7\r\nmyvalue\r\n";
         Socket socket=new Socket("localhost", 7777);
-        OutputStream os=socket.getOutputStream();//×Ö½ÚÊä³öÁ÷
-        PrintWriter pw=new PrintWriter(os);//½«Êä³öÁ÷°ü×°Îª´òÓ¡Á÷
+        OutputStream os=socket.getOutputStream();//å­—èŠ‚è¾“å‡ºæµ
+        PrintWriter pw=new PrintWriter(os);//å°†è¾“å‡ºæµåŒ…è£…ä¸ºæ‰“å°æµ
         pw.write(setCmd);
         pw.flush();
         InputStream is=socket.getInputStream();
         BufferedReader br=new BufferedReader(new InputStreamReader(is));
         String info=null;
         while((info=br.readLine())!=null){
-            System.out.println("server response£º"+info);
+            System.out.println("server responseï¼š"+info);
         }
-        //4.¹Ø±Õ×ÊÔ´
+        //4.å…³é—­èµ„æº
         br.close();
         is.close();
         pw.close();

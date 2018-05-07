@@ -7,17 +7,17 @@ public class InfoCmd {
     public static void main(String argv[]) throws IOException {
         String infoCmd="$4\r\ninfo\r\n";
         Socket socket=new Socket("localhost", 7777);
-        OutputStream os=socket.getOutputStream();//×Ö½ÚÊä³öÁ÷
-        PrintWriter pw=new PrintWriter(os);//½«Êä³öÁ÷°ü×°Îª´òÓ¡Á÷
+        OutputStream os=socket.getOutputStream();//å­—èŠ‚è¾“å‡ºæµ
+        PrintWriter pw=new PrintWriter(os);//å°†è¾“å‡ºæµåŒ…è£…ä¸ºæ‰“å°æµ
         pw.write(infoCmd);
         pw.flush();
         InputStream is=socket.getInputStream();
         BufferedReader br=new BufferedReader(new InputStreamReader(is));
         String info=null;
         while((info=br.readLine())!=null){
-            System.out.println("server response£º"+info);
+            System.out.println("server responseï¼š"+info);
         }
-        //4.¹Ø±Õ×ÊÔ´
+        //4.å…³é—­èµ„æº
         br.close();
         is.close();
         pw.close();

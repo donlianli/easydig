@@ -5,6 +5,14 @@
 	<artifactId>dig</artifactId>
 	<version>0.0.1</version>
 	<dependencies>
+	
+	 <dependency>
+          <groupId>com.aliyun.openservices</groupId>
+          <artifactId>ons-client</artifactId>
+          <version>1.1.5</version>
+        </dependency>
+	
+	
 	<dependency>
 	<groupId>org.easymock</groupId>
 	  <artifactId>easymock</artifactId>
@@ -120,8 +128,21 @@
 			<artifactId>hessian</artifactId>
 			<version>4.0.38</version>
 		</dependency>
-		            
-            <dependency>
+
+		<dependency>
+			<groupId>org.eclipse.jetty.aggregate</groupId>
+			<artifactId>jetty-all</artifactId>
+			<version>9.2.14.v20151106</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+		
+
+
+		<dependency>
 				<groupId>org.apache.zookeeper</groupId>
 				<artifactId>zookeeper</artifactId>
 				<version>3.3.6</version>

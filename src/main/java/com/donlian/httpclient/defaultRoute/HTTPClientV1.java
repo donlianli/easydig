@@ -22,7 +22,7 @@ public class HTTPClientV1 {
         // 获得Http客户端(可以理解为:你得先有一个浏览器;注意:实际上HttpClient与浏览器是不一样的)
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         // 创建Get请求
-        HttpGet httpGet = new HttpGet("http://localhost:8888/doGetControllerOne");
+        HttpGet httpGet = new HttpGet("http://localhost:8888");
 
         // 响应模型
         CloseableHttpResponse response = null;
@@ -31,9 +31,8 @@ public class HTTPClientV1 {
             response = httpClient.execute(httpGet);
             // 从响应模型中获取响应实体
             HttpEntity responseEntity = response.getEntity();
-            System.out.println("响应状态为:" + response.getStatusLine());
+           
             if (responseEntity != null) {
-                System.out.println("响应内容长度为:" + responseEntity.getContentLength());
                 System.out.println("响应内容为:" + EntityUtils.toString(responseEntity));
             }
         } catch (Exception e) {

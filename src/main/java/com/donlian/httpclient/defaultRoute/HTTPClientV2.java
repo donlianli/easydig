@@ -20,14 +20,14 @@ public class HTTPClientV2 {
     public static void main(String argvs[]){
         // 获得Http客户端(可以理解为:你得先有一个浏览器;注意:实际上HttpClient与浏览器是不一样的)
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-        
+
         for(int i=0;i<10;i++) {
-        	new Thread(new Runnable() {
-				@Override
-				public void run() {
-					GetRequest(httpClient);
-				}
-        	}).start();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    GetRequest(httpClient);
+                }
+            }).start();
         }
     }
 

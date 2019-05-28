@@ -27,7 +27,6 @@ public class HTTPClientV5 {
     	cm.setMaxTotal(200);
     	// Increase default max connection per route to 20
     	cm.setDefaultMaxPerRoute(20);
-        // 获得Http客户端(可以理解为:你得先有一个浏览器;注意:实际上HttpClient与浏览器是不一样的)
         CloseableHttpClient httpClient = HttpClientBuilder.create()
         		.setConnectionManager(cm).build();
         
